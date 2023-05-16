@@ -1,33 +1,37 @@
 <template>
-  <h3 class="section-title">人脸识别</h3>
-  <div class="camera">
-    <!--图片展示-->
-    <video ref="video" class="img"></video>
-    <!--canvas截取流-->
-    <canvas ref="canvas" class="img"></canvas>
-    <!--确认-->
-    <div class="desc">
-      <block v-if="mode == 'verificate'">
-        <div class="text">请把面部放在圆圈内</div>
-        <div class="text">拍摄脸部来确认身份</div>
-      </block>
-      <block v-if="mode == 'create'">
-        <div class="text">请把完整面部放在圆圈内</div>
-        <div class="text">拍摄脸部来保存身份识别数据</div>
-      </block>
+  <div class="page">
+    <CpnavbarVue title="人脸识别"/>
+    <div class="camera">
+      <!--图片展示-->
+      <video ref="video" class="img"></video>
+      <!--canvas截取流-->
+      <canvas ref="canvas" class="img"></canvas>
+      <!--确认-->
+      <div class="desc">
+        <block v-if="mode == 'verificate'">
+          <div class="text">请把面部放在圆圈内</div>
+          <div class="text">拍摄脸部来确认身份</div>
+        </block>
+        <block v-if="mode == 'create'">
+          <div class="text">请把完整面部放在圆圈内</div>
+          <div class="text">拍摄脸部来保存身份识别数据</div>
+        </block>
+      </div>
+      <el-button type="primary" @click="photograph">
+        {{ mode == "create" ? "录入面部信息" : "身份核实" }}
+      </el-button>
     </div>
-    <el-button type="primary" @click="photograph">
-      {{ mode == "create" ? "录入面部信息" : "身份核实" }}
-    </el-button>
   </div>
 </template>   
 <script>
+import CpnavbarVue from '../../components/Cpnavbar.vue';
 export default {
+  components:{CpnavbarVue},
   data() {
     return {
       headImgSrc: "",
-      mode: 'verificate',
-      photoPath: '',
+      mode: "verificate",
+      photoPath: "",
     };
   },
   methods: {
@@ -50,7 +54,7 @@ export default {
     },
     // 拍照
     photograph() {
-      let that=this
+      let that = this;
       let ctx = this.$refs["canvas"].getContext("2d");
       // 把当前视频帧内容渲染到canvas上
       ctx.drawImage(this.$refs["video"], 0, 0, 300, 200);
@@ -66,47 +70,47 @@ export default {
       console.log(size);
 
       // 上传拍照信息  调用接口上传图片 .........
-      let url=null;
-      if(that.mode=='create'){
+      let url = null;
+      if (that.mode == "create") {
         //创建患者面部模型档案
-        url='/face/auth/createFaceModel';
-      }else{
+        url = "/face/auth/createFaceModel";
+      } else {
         //验证患者面部模型
-        url='/face/auth/verifyFaceModel';
+        url = "/face/auth/verifyFaceModel";
       }
       //提交ajax请求，上传照片Bae64字符串
-      that.$http(url,'post',{photo:str},true,function(res){
-        console.log('提交照片返回的数据',res)
-        if(that.mode=='create'){
-          if(res.msg=='success'){
+      that.$http(url, "post", { photo: str }, true, function (res) {
+        console.log("提交照片返回的数据", res);
+        if (that.mode == "create") {
+          if (res.msg == "success") {
             ElMessage({
-              message: '模型录入成功',
-              type: 'success',
-            })
+              message: "模型录入成功",
+              type: "success",
+            });
             //跳转到上一页
             that.$router.go(-1);
-          }else{
+          } else {
             ElMessage({
-              message: '模型录入失败',
-              type: 'error',
-            })
+              message: "模型录入失败",
+              type: "error",
+            });
           }
-        }else{
+        } else {
           //判断人脸识别结果
-          if(res.result){
+          if (res.result) {
             ElMessage({
-              message: '面部验证成功',
-              type: 'success',
-            })
+              message: "面部验证成功",
+              type: "success",
+            });
             that.$router.go(-1);
-          }else{
+          } else {
             ElMessage({
-              message: '面部验证失败',
-              type: 'error',
-            })
+              message: "面部验证失败",
+              type: "error",
+            });
           }
         }
-      })
+      });
     },
     // 关闭摄像头
     closeCamera() {
@@ -123,8 +127,8 @@ export default {
     },
   },
   mounted: function () {
-    let {mode}=this.$route.params
-    this.mode=mode;
+    let { mode } = this.$route.query;
+    this.mode = mode;
     this.callCamera();
   },
 };
@@ -142,7 +146,7 @@ h3 {
   height: 8%;
   background-color: #cbcccd;
 }
-.img{
+.img {
   width: 300px;
   height: 200px;
   border-radius: 107px;
@@ -151,19 +155,19 @@ h3 {
 }
 .el-button {
   width: 80%;
-  height: 44px;  
+  height: 44px;
   margin-left: 40px;
 }
-.text{
+.text {
   text-align: center;
   font-size: 12px;
   color: rgb(19, 149, 249);
 }
-.camera{
+.camera {
   height: 100%;
   width: 100%;
   min-height: 100vh;
-  background-image: url('../../assets/face.jpg');
+  background-image: url("../../assets/face.jpg");
   background-size: 100% 100%;
 }
 </style>

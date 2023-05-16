@@ -1,5 +1,7 @@
 <template>
-  <div class="guide">
+  <div class="page">
+    <!-- <CpnavbarVue title="智能导诊"/> -->
+    <div class="guide">
     <!--头-->
     <header class="mui-bar mui-bar-nav">
       <!--选项-->
@@ -92,9 +94,12 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 <script>
+import CpnavbarVue from '../../components/Cpnavbar.vue';
 export default {
+  components:{CpnavbarVue},
   data() {
     return {
       person: `${this.$minioUrl}/patient-wx/Guide/man.png`,
@@ -639,7 +644,7 @@ export default {
     },
     onLink(y,i,isSex,isAge){
         this.$router.push({
-            path: 'Index1',
+            path: '/index1',
             query:{y:y,i:i,isSex:isSex,isAge:isAge}
         })
     }
@@ -651,6 +656,10 @@ export default {
 @import "./css/option.css";
 @import "./css/style.css";
 @import "./css/mui.min.css";
+.page{
+  width: 100%;
+  height: 100%;
+}
 #imaPic {
   width: 100%;
   height: 100%;

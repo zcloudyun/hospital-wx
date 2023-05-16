@@ -40,8 +40,7 @@
 </template>
 
 <script>
-import dayjs from 'dayjs';
-import { ElMessage } from 'element-plus';
+import { dayjs,ElMessage } from 'element-plus';
 // import isBetween from 'dayjs/plugin/isBetween'
 // dayjs.extend(isBetween);
 export default {
@@ -208,8 +207,8 @@ export default {
 						let outTradeNo=res.outTradeNo
 						//弹出微信支付界面
 						that.$router.push({
-							name:'Pay',
-							params:{outTradeNo:outTradeNo,price:price}
+							path:'/pay',
+							query:{outTradeNo:outTradeNo,price:price}
 						})
 					}
 				});
@@ -224,8 +223,7 @@ export default {
 	},
 	mounted: function() {
 		let that=this;
-		console.log('挂号界面发送的数据',that.$route.params);
-		let {date,doctorId,deptSubId}=that.$route.params;
+		let {date,doctorId,deptSubId}=that.$route.query;
 		that.date=date;
 		that.doctorId=doctorId;
 		that.deptSubId=deptSubId;

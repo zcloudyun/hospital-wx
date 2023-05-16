@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="top-container">
-        <h3 class="section-title">添加就诊卡信息</h3>
+        <Cpnavbar title="添加就诊卡信息"/>
       <div class="step-container">
         <div class="icon-1">
           <i slot="right" class="img" size="18" :name="img['top-icon-1']"></i>
@@ -135,7 +135,7 @@
       <div class="illness-tabs">
         <div
           class="tab"
-          v-for="one in illnessList"
+          v-for="one in illnessList " :key="one"
           :class="dataForm.medicalHistory.includes(one) ? 'tab active' : 'tab'"
           @click="illnessHandle(one)"
         >
@@ -148,7 +148,7 @@
       </div>
       <div class="insurance-tabs">
         <div
-          v-for="one in insuranceTypeList"
+          v-for="one in insuranceTypeList" :key="one"
           :class="dataForm.insuranceType == one ? 'tab active' : 'tab'"
           @click="insuranceTypeHandle(one)"
         >
@@ -166,9 +166,11 @@
 </template>
 
 <script>
-import dayjs from "dayjs";
+import { dayjs} from 'element-plus';
 import { ElMessage } from "element-plus";
+import CpnavbarVue from '../../components/Cpnavbar.vue';
 export default {
+  components:{CpnavbarVue},
   data() {
     return {
       img: {
@@ -394,7 +396,7 @@ export default {
                     message: that.flag == "insert" ? "就诊卡创建成功" : "就诊卡更新成功",
                     type: 'success',
               })
-              that.$router.push({name:"Main"})
+              that.$router.push({name:"Mine"})
            })
     }).catch(() => {
         ElMessage({
@@ -417,7 +419,6 @@ export default {
 .top-container {
   background-color: @bgc-10;
   height: 320px;
-  padding-top: 2px;
   box-sizing: border-box;
   .section-title{
     padding-bottom: 10px;
@@ -427,36 +428,36 @@ export default {
   .step-container {
     display: flex; 
     justify-content: space-between;
-    padding: 0px 37px;
+    padding: 15px;
     .icon {
       background-color: rgba(255, 255, 255, 0.85);
-      width: 100px;
-      height: 60px;
+      width: 60px;
+      height: 50px;
       border-radius: 10px;
       position: relative;
       text-align: center;
-      line-height: 60px;
+      line-height: 50px;
       background-repeat: no-repeat;
     }
     .icon-1 {
       .icon;
       background-image: url("@{baseUrl}/page/user/fill_user_info/top-icon-1.png");
-      background-size: 46px;
-      background-position: 7px 8px;
+      background-size: 40px;
+      background-position: 10px 5px;
       background-repeat: no-repeat;
     }
     .icon-2 {
       .icon;
       background-image: url("@{baseUrl}/page/user/fill_user_info/top-icon-2.png");
-      background-size: 46px;
-      background-position: 7px 8px;
+      background-size: 40px;
+      background-position: 10px 5px;
       background-repeat: no-repeat;
     }
     .icon-3 {
       .icon;
       background-image: url("@{baseUrl}/page/user/fill_user_info/top-icon-3.png");
-      background-size: 46px;
-      background-position:7px 8px;
+      background-size: 40px;
+      background-position:10px 5px;
       background-repeat: no-repeat;
     }
     .desc {

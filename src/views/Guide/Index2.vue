@@ -1,4 +1,5 @@
 <template>
+<CpnavbarVue title="就诊建议"/>
     <div style="background: #E8E8E8;height:100%;">
 		<div style="padding: 10px;">就诊建议</div>
 		<div style="background: white;">
@@ -19,7 +20,9 @@
     </div>
 </template>
 <script>
+import CpnavbarVue from '../../components/Cpnavbar.vue';
 export default {
+    components:{CpnavbarVue},
     data(){
         return{
           mess:'暂无',

@@ -9,9 +9,10 @@ import Components from 'unplugin-vue-components/vite'
 import {
     ElementPlusResolver
 } from 'unplugin-vue-components/resolvers'
+let publicPath='./'
 module.exports = {
     //基础路径
-    base: '/hospital-vue',
+    base: './',
     server: {
         port: 3000,
         //是否弹出浏览器
@@ -19,6 +20,7 @@ module.exports = {
         //允许跨域
         cors: true
     },
+    publicPath:publicPath,
     plugins: [
         vue(),
         //集成ElementPlus组件库

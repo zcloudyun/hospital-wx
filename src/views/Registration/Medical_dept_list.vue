@@ -1,6 +1,6 @@
 <template>
 	<div class="page">
-        <h3 class="section-title">添加就诊卡信息</h3>
+        <Cpnavbar title="添加就诊卡信息" />
 		<div class="main">
 			<div class="left" :style="height">
 				<div
@@ -19,7 +19,9 @@
 </template>
 
 <script>
+import CpnavbarVue from '../../components/Cpnavbar.vue';
 export default {
+	components:{CpnavbarVue},
 	data() {
 		return {
 			deptId: null,
@@ -59,8 +61,8 @@ export default {
 		clickSubHandle:function(deptSubId,deptSubName){
 			console.log('点击了：',deptSubName)
 			this.$router.push({
-				name: 'Dept_sub_plan',
-				params: {deptSubId:deptSubId,deptSubName:deptSubName}
+				path: '/dept_sub_plan',
+				query: {deptSubId:deptSubId,deptSubName:deptSubName}
 			})
 		}
 	},
@@ -96,8 +98,8 @@ export default {
 	.left {
 		background-color: #fff;
 		width: 40%;
-		padding: 20px 0;
-		margin-right: 15px;
+		padding: 15px 0;
+		margin-right: 12px;
 		border-top-right-radius: 20px;
 		border-bottom-right-radius: 20px;
 		.item {
@@ -114,7 +116,7 @@ export default {
 	.right {
 		background-color: #fff;
 		flex-grow: 1;
-		padding: 20px 10px 20px 0px;
+		padding: 15px 10px 20px 0px;
 		border-top-left-radius: 20px;
 		border-bottom-left-radius: 20px;
 		.item {

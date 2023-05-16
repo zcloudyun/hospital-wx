@@ -1,11 +1,12 @@
 <template>
 	<div class="page">
+		<CpnavbarVue title="挂号详情"/>
 		<div class="top-container" v-if="flag">
 			<img :src="img.logo" mode="widthFix" class="logo">
 			<div class="title">e医相伴医院</div>
-			<div class="qrcode-container">
+			<div class="qrcode-container" style="margin:10px">
 				<div class="qrcode"><div class="qr-code" ref="qrCodeUrl"></div></div>
-				<div>就诊请出示二维码</div>
+				<div style="margin:10px">就诊请出示二维码</div>
 			</div>
 			<div class="step-container">
 				<div class="step">
@@ -118,9 +119,11 @@
 </template>
 
 <script>
-import dayjs from 'dayjs';
+import { dayjs} from 'element-plus';
 import QRCode from 'qrcodejs2-fix';
+import CpnavbarVue from '../../components/Cpnavbar.vue';
 export default {
+	components:{CpnavbarVue},
 	data() {
 		return {
 			img: {
@@ -132,6 +135,7 @@ export default {
 			deptSubName: '',
 			doctorName: '',
 			location: '',
+			registrationId:'',
 			date: '',
 			slot: '',
 			job: '',
@@ -176,7 +180,7 @@ export default {
 	search(){
       let that=this;
 	  let data={
-		registrationId:26
+		registrationId:that.registrationId
 	  }
 	  that.$http('/registration/searchRegistrationById','post',data,true,function(res){
 		if(res.code==200){
@@ -207,43 +211,12 @@ export default {
 	}
   },
   mounted: function () {
+	const {registrationId}=this.$route.query
+	this.registrationId=registrationId;
     this.creatQrCode(); // 创建二维码
 	this.search();
+	
   },
-	// mounted: function() {
-	// 	let that=this;
-    //     let {id}=this.$route.params;
-	// 	that.id=id;
-	// 	let data={id:id}
-		// that.ajax(that.api.searchRegistrationInfo,'post',data,function(res){
-		// 	let data=res.data;
-		// 	that.outTradeNo=data.outTradeNo;
-		// 	that.patientName=data.patientName;
-		// 	that.subDeptName=data.subDeptName;
-		// 	that.doctorName=data.doctorName;
-		// 	that.location=data.location;
-		// 	that.job=data.job;
-		// 	if(['主任医师','副主任医师'].includes(that.job)){
-		// 		that.type='专家号';
-		// 	}else{
-		// 		that.type='普通号';
-		// 	}
-		// 	that.date=data.date;
-		// 	that.slot=data.slot;
-		// 	that.datetime=data.date+' '+that.json[data.slot];
-		// 	that.amount=data.amount+'元';
-		// 	that.paymentStatus=data.paymentStatus;
-		// 	let today=dayjs().format('YYYY-MM-DD');
-		// 	if(today ==that.date && that.paymentStatus==2){
-		// 		that.flag=true;
-		// 	}else{
-		// 		that.flag=false;
-		// 	}
-		// 	if(data.hasOwnProperty('prescriptionId')){
-		// 		that.prescriptionId=data.prescriptionId;
-		// 	}
-		// },false);
-	// },
 };
 </script>
 
@@ -252,13 +225,11 @@ export default {
 .page {
 	background-color: @bc-12;
 	font-family: @ff-1;
-	padding-top: 20px;
 }
 .top-container {
 	background-color: #fff;
 	border-radius: 15px;
-	margin: 0 15px;
-	padding: 0px 15px 5px 15px;
+	padding: 5px;
 	.logo {
 		width: 150px;
 		display: block;
@@ -278,7 +249,7 @@ export default {
 			width: 140px;
 			margin-left: auto;
 			margin-right: auto;
-			margin-top: 60px;
+			margin-top: 30px;
 		}
 		.txt {
 			display: block;

@@ -23,7 +23,11 @@ import CpnavbarVue from '../../components/Cpnavbar.vue';
 		data() {
 			return {
 				price:'',
-				outTradeNo:''
+				outTradeNo:'',
+				videoDiagnoseId:'',
+				expectStart:'',
+				expectEnd:'',
+				doctorId:''
 			}
 		},
 		methods: {
@@ -42,19 +46,30 @@ import CpnavbarVue from '../../components/Cpnavbar.vue';
                    let data={
 					    outTradeNo:that.outTradeNo
 				    }
-					that.$http('/registration/searchPaymentResult','post',data,false,function(res){
-				        console.log(res)
+					that.$http('/video_diagnose/transactionCallback','post',data,false,function(res){
 						if(res.result){
-                            ElMessage({
-                                type:'success',
-                                message:'付款成功'
-                            })
-                            that.$router.push({name:'Mine'}) 
-						}else{
-                            ElMessage({
-                                type:'warning',
-                                message:'付款异常，请联系客服'
-                            })
+							that.$http('/video_diagnose/searchPaymentResult','post',data,false,function(res){
+                               if(res.result){
+									ElMessage({
+										type:'success',
+										message:'付款成功'
+									})
+									that.$router.push({
+										path:'/prepare_diagnose',
+										query:{
+											videoDiagnoseId:that.videoDiagnoseId,
+											expectStart:that.expectStart,
+											expectEnd:that.expectEnd,
+											doctorId:that.doctorId
+										}
+									}) 
+								}else{
+									ElMessage({
+										type:'warning',
+										message:'付款异常，请联系客服'
+									})
+								}
+							})
 						}
                     })           
                 })
@@ -68,9 +83,14 @@ import CpnavbarVue from '../../components/Cpnavbar.vue';
 		},
 		mounted:function(){
 			let that=this;
-            let {outTradeNo,price}=that.$route.query;
+            let {outTradeNo,price,videoDiagnoseId,expectStart,expectEnd,doctorId}=that.$route.query;
+			console.log(this.$route.query);
 			that.outTradeNo=outTradeNo
 			that.price=price;
+			that.videoDiagnoseId=videoDiagnoseId;
+            that.expectStart=expectStart;
+			that.expectEnd=expectEnd;
+			that.doctorId=doctorId;
 		}
 	}
 </script>
@@ -117,8 +137,9 @@ import CpnavbarVue from '../../components/Cpnavbar.vue';
 		margin-left:220px;
 	}
 }
-.el-button--large {
-    width: 100%;
-    height: 50px;
+.el-button--large{
+	padding: 0px 140px;
+	height: 50px;
+	width: 100%;
 }
 </style>

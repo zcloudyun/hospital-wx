@@ -207,4 +207,7 @@ export default{
     }
   }
 }
+.el-input__wrapper {
+    width: 92%;
+}
 </style>

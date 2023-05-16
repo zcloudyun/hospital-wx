@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+    <CpnavbarVue title="电子处方"/>
     <div class="main">
       <div class="hospital">e医相伴医院</div>
       <div class="title">电子处方笺</div>
@@ -30,7 +31,7 @@
             <div class="spec txt">{{ one.scale }}</div>
           </div>
           <div class="row">
-            <div class="method txt">{{ one.use }}</div>
+            <div class="method txt" style="font-size:13px">{{ one.use }}</div>
           </div>
         </div>
       </div>
@@ -46,10 +47,15 @@
 <script>
 //二维码
 import QRCode from 'qrcodejs2-fix';
+import CpnavbarVue from '../../components/Cpnavbar.vue';
 export default {
+  components:{
+    CpnavbarVue
+  },
   data() {
     return {
       uuid: "",
+      registrationId:'',
       patient: {
         name: null,
         sex: null,
@@ -76,10 +82,10 @@ export default {
     //发起Ajax请求加载电子处方数据
     onLoad() {
       let that=this;
-      // let registrationId=options.registrationId;
       let data={
-        registrationId:26
+        registrationId:that.registrationId
       }
+      console.log(data)
       that.$http('/prescription/searchPrescriptionById','post',data,true,function(res){
         if(res.code==200){
           let result=res.result;
@@ -97,6 +103,8 @@ export default {
     }
   },
   mounted: function () {
+    const {registrationId}=this.$route.query;
+    this.registrationId=registrationId;
     this.creatQrCode(); // 创建二维码
     this.onLoad();
   },
@@ -107,12 +115,14 @@ export default {
 <style lang="less" scoped>
 @import "../../style.less";
 .page {
-  background-color: #cccccc;
   font-family: @ff-1;
-  padding: 10px 0 40px 0;
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  padding: 0 0 40px 0;
 }
 .main {
-  background-color: #fff;
+  background-color: #eee;
   margin: 0px 7px 0 7px;
   border-radius: 15px;
   position: relative;
@@ -186,7 +196,7 @@ export default {
   }
 }
 .rp-container {
-  padding: 50px 0;
+  padding: 30px 0;
   .rp-title {
     font-size: 20px;
     font-weight: bold;
@@ -203,6 +213,7 @@ export default {
         color: @fc-1;
         font-weight: bold;
       }
+      
     }
   }
 }

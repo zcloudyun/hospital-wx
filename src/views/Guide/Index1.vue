@@ -1,5 +1,6 @@
 <template>
   <div class="index1">
+    <CpnavbarVue title="选择症状"/>
     <ul ref="uli" class="chat-thread">
       <li ref="zz">部位/症狀</li>
       <li>
@@ -35,7 +36,9 @@
   </div>
 </template>
 <script>
+import CpnavbarVue from '../../components/Cpnavbar.vue'
 export default {
+  components:{CpnavbarVue},
   data() {
     return {
       index: 1,
@@ -501,7 +504,7 @@ export default {
       no[no.length - 1].disabled = "disabled";
       setTimeout(function () {
         that.$router.push({
-            path:'Index2',
+            path:'/index2',
             query:{y,i,isSex,isAge,index:that.index}
         })
         document.body.scrollTop = document.body.scrollHeight;

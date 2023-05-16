@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div class="title">就诊须知</div>
+    <CpnavbarVue title="就诊须知"/>
     <div class="desc">发布单位：重庆市e医相伴医院</div>
     <img :src="bannerUrl" mode="widthFix" class="banner" />
     <div class="content">
@@ -23,17 +23,22 @@
 
 <script>
 import { ElMessage } from "element-plus";
+import CpnavbarVue from '../../components/Cpnavbar.vue';
 export default {
+  components:{CpnavbarVue},
   data() {
     return {
       bannerUrl: `${this.$minioUrl}/patient-wx/page/registration/notice/banner.jpg`,
     };
   },
   methods: {
+    onClickLeft(){
+        this.$router.go(-1)
+    },
     acceptHandle: function () {
       let that = this;
       //检查用户是否登陆
-      let token = window.localStorage.getItem("token");
+      let token = localStorage.getItem("tokens");
       console.log(token);
       if (token == null || token.length == 0) {
         ElMessage({
@@ -72,7 +77,6 @@ export default {
 .page {
   background-color: #fff;
   font-family: @ff-1;
-  padding-top: 20px;
   padding-bottom: 100px;
 }
 .title {
@@ -93,19 +97,19 @@ export default {
   display: block;
   font-size: 16px;
   color: @fc-3;
-  margin: 0 45px 20px 45px;
+  margin: 0 45px 20px 15px;
 }
 .banner {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
   margin-bottom: 30px;
+  width:100%;
 }
 
 .operate {
   margin: 30px 0;
   .el-button {
-    width: 98%;
+    margin: 20px;
+    width: 90%;
   }
 }
 .content {
@@ -119,5 +123,8 @@ export default {
     margin: 10px 45px 10px 45px;
     line-height: 1.8;
   }
+}
+.el-input__wrapper {
+    width: 92%;
 }
 </style>

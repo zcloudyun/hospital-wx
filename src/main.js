@@ -10,11 +10,6 @@ const app = createApp(App) //创建VUE对象
 //导入路由配置
 import router from './router'
 app.use(router) //挂载路由插件
-//使用WebSocket，后端项目给前端页面推送通知
-// import VueNativeSock from "vue-native-websocket-vue3";
-// app.use(VueNativeSock, "ws://localhost:8092/hospital-api/socket", {
-// 	"format": "json"
-// });
 //导入Cookie库，可以读写Cookie数据
 import VueCookies from 'vue3-cookies'
 app.use(VueCookies); //挂载Cookie插件
@@ -40,6 +35,9 @@ app.use(ElementPlus, {
 //配置JS生成PDF的公共函数
 import html2Canvas from 'html2canvas'
 import JsPDF from 'jspdf'
+import Vant from 'vant';
+import 'vant/lib/index.css';
+app.use(Vant);
 app.config.globalProperties.getPdf = function() {
     var title = this.htmlTitle //PDF标题
     html2Canvas(document.querySelector('#pdfDom'), {
@@ -79,17 +77,23 @@ app.config.globalProperties.getPdf = function() {
 //导入echarts库
 import * as echarts from 'echarts'
 app.config.globalProperties.$echarts = echarts //设置全局变量$echarts
-
-
 //后端项目的URL根路径
-let baseUrl = "http://localhost:8092/hospital-api"
+let baseUrl = "http://47.108.146.141:8095/hospital-api"
 app.config.globalProperties.$baseUrl = baseUrl //设置全局变量$baseUrl
+
+//健康测评路径
+let base = "https://meituan.thexxdd.cn/api"
+app.config.globalProperties.$base = base //设置全局变量$base
 
 //Minio服务器地址
 let minioUrl = "http://47.108.146.141:9000/hospital"
 app.config.globalProperties.$minioUrl = minioUrl
 
-
+app.config.globalProperties.$tencent = {
+	trtc: {
+		appid: "1400799601"
+	}
+}
 
 //封装全局Ajax公共函数
 app.config.globalProperties.$http = function(url, method, data, async, fun) {
@@ -104,7 +108,7 @@ app.config.globalProperties.$http = function(url, method, data, async, fun) {
         },
         headers: {
             //从localStorage获取token
-            "token": localStorage.getItem("token")
+            "token": localStorage.getItem("tokens")
         },
         // async的值为true表示异步的ajax，为false就表示同步ajax
         async: async,

@@ -1,0 +1,126 @@
+<template>
+   <CpnavbarVue title="我的病历" />
+	<div class="page_liebiao1">
+		<div class="yonghu" v-for="(item,index) in recordList" :key="index" @click="onDetail(item.id)">
+            <div class="shijian">就诊时间：<span style="margin-left:10px">{{item.createTime}}</span></div>
+			<div>
+				<div class="name">就诊科室：<span style="margin-left:5px;font-size:13px;">{{item.deptSubName}}</span></div>
+			</div>
+			<div class="pingfen" style="display: flex;">
+			    <div style="font-size:14px">就诊医生：{{item.doctorName}}</div> 
+                <div class="btn" ><el-icon><ArrowRight /></el-icon></div>
+			</div>
+			<div style="margin-left:10px;font-size:14px;">就诊人：<span style="margin-left:10px">{{item.name}}</span></div>
+		</div>
+	</div>
+</template>
+<script>
+import CpnavbarVue from '../../components/Cpnavbar.vue'
+export default {
+    components:{CpnavbarVue},
+    data() {
+        return {
+            recordList: {},
+        }
+    },
+    methods: {
+		onDetail(recordId){
+          this.$router.push({
+			path:'/record',
+			query:{recordId:recordId}
+		  })
+		},
+        searchByUserIdRateAll(){
+			let that=this;
+		    that.$http("/medical/record/searchRecordAll",'post',{},true,function(res){
+                console.log(res)
+				if(res.code==200){
+                   that.recordList=res.result;
+				}
+			})
+		}
+    },
+	mounted() {
+		this.searchByUserIdRateAll();
+	},
+}
+</script>
+
+<style lang="scss" scoped>
+	.page_liebiao1 {
+		width: 100%;
+		height: 100%;
+		background-color: #e8e8e8;
+		padding-top: 1px;
+
+		.tupian {
+			margin-top: 15px;
+			margin-left: 10px;
+		}
+
+		.shijian {
+			font-size: 12px;
+			margin-right:10px;
+			margin-top: 10px;
+            text-align: right;
+			color: #808080;
+		}
+
+		.pingfen {
+			margin-top: 10px;
+			width: 100%;
+            margin-left:10px;
+			font-size: 14px;
+		}
+
+		.biaoqian {
+			margin-top: 5px;
+			padding-left: 5px;
+			width: 40%;
+		}
+
+		.name {
+			margin-top: 10px;
+			padding-left: 10px;
+            margin-right: auto;
+		}
+
+		.yonghu {
+			width: 93vw;
+			height: 18vh;
+			background-color: #ffffff;
+			border-radius: 10px;
+			padding: 10px;
+			margin-left: 4px;
+			margin-top: 10px;
+
+		}
+
+		.yonghu1 {
+			width: 93vw;
+			height: 40vh;
+			background-color: #ffffff;
+			border-radius: 10px;
+			margin-top: 10px;
+			padding-left: 19px;
+			margin-left: 3.5px;
+		}
+	}
+	.btn{
+		margin-left:200px;
+		.el-icon{
+		  font-size: 20px;
+          
+	    }
+	}
+	.text{
+		margin-top: 5px;
+		margin-left: 10px;
+		color:rgb(156, 150, 150);
+		font-size:14px;
+	}
+	.el-rate__text{
+      margin-left: 10px;
+	  margin-right: 20px;
+	}
+</style>

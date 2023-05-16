@@ -1,7 +1,8 @@
 <template>
 	<div class="page">
+		<CpnavbarVue title="号源" />
 		<div class="date-container">
-			<div class="item" v-for="one in dateList">
+			<div class="item" v-for="one in dateList" :key="one.id">
 				<div class="day">{{ one.day }}</div>
 				<div :class="one.date == date ? 'selector active' : 'selector'" @click="clickDataHandle(one.date)">
 					<div class="date">{{ one.dateOfMonth }}</div>
@@ -9,7 +10,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="doctor" v-for="one in doctorList">
+		<div class="doctor" v-for="one in doctorList" :key="one.id">
 			<el-avatar :src="one.photo" size="50"></el-avatar>
 			<div class="info">
 				<div class="row">
@@ -36,9 +37,10 @@
 </template>
 
 <script>
-import dayjs from 'dayjs';
-import { ElMessage } from 'element-plus';
+import {dayjs, ElMessage } from 'element-plus';
+import CpnavbarVue from '../../components/Cpnavbar.vue';
 export default {
+	components:{CpnavbarVue},
 	data() {
 		return {
 			deptSubId: null,
@@ -136,8 +138,8 @@ export default {
                     ).then(() => {
                         //跳转到面部采集页面，录入面部信息
                         that.$router.push({
-                            name:'User_camera',
-                            params:{mode:'create'}
+                            path:'/user_camera',
+                            query:{mode:'create'}
                         })
                     }).catch(() => {
                         ElMessage({
@@ -157,8 +159,8 @@ export default {
                     ).then(() => {
                         //跳转到面部采集页面，录入面部信息
                         that.$router.push({
-                            name:'User_camera',
-                            params:{mode:'verificate'}
+                            path:'/user_camera',
+                            query:{mode:'verificate'}
                         })
                     }).catch(() => {
                         ElMessage({
@@ -169,10 +171,9 @@ export default {
 				}
 				//满足挂号条件
 				else{
-					console.log('跳转挂号页面')
 					that.$router.push({
-						name:'Doctor_schedule',
-						params:{deptSubId:that.deptSubId,doctorId:id,date:date}
+						path:'/doctor_schedule',
+						query:{deptSubId:that.deptSubId,doctorId:id,date:date}
 					})
 				}
 			})
@@ -180,7 +181,7 @@ export default {
 	},
     mounted:function(){
         let that=this
-        let {deptSubId,deptSubName}=that.$route.params
+        let {deptSubId,deptSubName}=that.$route.query
         that.deptSubId=deptSubId
         that.searchCanRegisterInDateRange(deptSubId)
 		that.searchDeptSubDoctorPlanInDay()
@@ -194,8 +195,6 @@ export default {
 	background-color: @bgc-12;
     height: 100%;
 	font-family: @ff-1;
-	padding-top: 15px;
-	padding-bottom: 0px;
 }
 .date-container {
 	display: flex;

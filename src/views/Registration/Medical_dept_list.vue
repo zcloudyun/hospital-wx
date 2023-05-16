@@ -5,14 +5,14 @@
 			<div class="left" :style="height">
 				<div
 					:class="one.id == deptId ? 'item active' : 'item'"
-					v-for="one in deptList"
+					v-for="one in deptList" :key="one.id"
 					@click="clickDeptHandle(one.id)"
 				>
 					{{ one.name }}
 				</div>
 			</div>
 			<div class="right">
-				<div class="item" v-for="one in sub" @click="clickSubHandle(one.id, one.name)">{{ one.name }}</div>
+				<div class="item" v-for="one in sub" :key="one.id" @click="clickSubHandle(one.id, one.name)">{{ one.name }}</div>
 			</div>
 		</div>
 	</div>

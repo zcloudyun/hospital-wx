@@ -9,7 +9,6 @@ import Components from 'unplugin-vue-components/vite'
 import {
     ElementPlusResolver
 } from 'unplugin-vue-components/resolvers'
-
 module.exports = {
     //基础路径
     base: '/hospital-vue',

@@ -28,9 +28,9 @@
                   <i class="el-icon-s-ticket"></i>
                   <span slot="title">人脸识别</span>
                 </el-menu-item>
-                <el-menu-item index="/doctor/report">
+                <el-menu-item index="/userpatientinfo">
                   <i class="el-icon-document"></i>
-                  <span slot="title">报告查询</span>
+                  <span slot="title">家庭档案</span>
                 </el-menu-item>
                 <el-menu-item index="/prescription">
                   <i class="el-icon-document"></i>
@@ -44,9 +44,17 @@
                   <i class="el-icon-question"></i>
                   <span slot="title">就诊咨询</span>
                 </el-menu-item>
+                <el-menu-item index="/doctor/counsel">
+                  <i class="el-icon-question"></i>
+                  <span slot="title">就诊评价</span>
+                </el-menu-item>
                 <el-menu-item index="/doctor/personal">
                   <i class="el-icon-user-solid"></i>
                   <span slot="title">个人信息</span>
+                </el-menu-item>
+                <el-menu-item index="/guide">
+                  <i class="el-icon-user-solid"></i>
+                  <span slot="title">智能导诊</span>
                 </el-menu-item>
               </el-menu>
             </el-col>
@@ -75,7 +83,6 @@ export default {
   },
   computed: {
     defaultActive() {
-      console.log(this.$route.path.split("/"));
       let pathArr = this.$route.path.split("/");
       let activePath = "/" + pathArr[1] + "/" + pathArr[2];
       return activePath;
@@ -97,7 +104,7 @@ export default {
   #doc_main {
     width: 100%;
     //  height: 90%;
-    background: url(../assets/img/bg.jpg) center center;
+    background: #f2f0db;
     flex: 1;
   }
 

@@ -40,10 +40,10 @@
                         <el-icon :style="iconStyle">
                            <OfficeBuilding />
                         </el-icon>
-                        就诊科室
+                        就诊诊室
                         </div>
                     </template>
-                    {{subDeptName}}
+                    {{deptSubName}}
                 </el-descriptions-item>
                 <el-descriptions-item>
                     <template #label>
@@ -77,7 +77,6 @@
                         </div>
                     </template>
                     {{location}}
-                    <el-tag size="small">School</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item>
                     <template #label>
@@ -115,10 +114,6 @@
                 </el-descriptions>
 			</div>
 		</div>
-        <!-- <div>
-            <div v-if="prescriptionId!=null" title="电子处方" :border="false" 
-					:value="prescriptionId" isLink:url="`/registration/prescription/prescription?registrationId=${id}`"></div>
-        </div> -->
 	</div>
 </template>
 
@@ -134,7 +129,7 @@ export default {
 			id: null,
 			outTradeNo: null,
 			patientName: '',
-			subDeptName: '',
+			deptSubName: '',
 			doctorName: '',
 			location: '',
 			date: '',
@@ -177,10 +172,43 @@ export default {
         colorLight: '#fff',
         correctLevel: QRCode.CorrectLevel.H
       });
-    }
+    },
+	search(){
+      let that=this;
+	  let data={
+		registrationId:26
+	  }
+	  that.$http('/registration/searchRegistrationById','post',data,true,function(res){
+		if(res.code==200){
+			let data=res.result;
+			that.outTradeNo=data.outTradeNo;
+			that.patientName=data.patientName;
+			that.deptSubName=data.deptSubName;
+			that.doctorName=data.doctorName;
+			that.location=data.location;
+			that.job=data.job;
+			if(['主任医师','副主任医师'].includes(that.job)){
+				that.type='专家号';
+			}else{
+				that.type='普通号';
+			}
+			that.date=data.date;
+			that.slot=data.slot;
+			that.datetime=data.date+' '+that.json[data.slot];
+			that.amount=data.amount+'元';
+			that.paymentStatus=data.paymentStatus;
+			if(that.paymentStatus==2){
+				that.flag=true;
+			}else{
+				that.flag=false;
+			}
+		}
+	  })
+	}
   },
   mounted: function () {
     this.creatQrCode(); // 创建二维码
+	this.search();
   },
 	// mounted: function() {
 	// 	let that=this;

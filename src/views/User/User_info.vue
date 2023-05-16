@@ -294,23 +294,23 @@ export default {
     },
     searchUserInfoCard:function(){
         let that=this
-		that.$http('/user/info/card/searchUserInfoCard','get',{},true,function(res){
-			console.log('后台返回的数据查看是否存在就诊卡信息',res)
-			if(res.msg=='没有查询到数据')
-			{
-				that.flag='insert';
-				return;
-			}
-			that.flag='update';
-			that.dataForm.id=res.id;
-			that.dataForm.name=res.name;
-			that.dataForm.sex=res.sex;
-			that.dataForm.pid=res.pid;
-			that.dataForm.tel=res.tel;
-			that.dataForm.birthday=res.birthday
-			that.dataForm.medicalHistory=res.medicalHistory
-			that.dataForm.insuranceType=res.insuranceType
-		},false)
+      that.$http('/user/info/card/searchUserInfoCard','get',{},true,function(res){
+        console.log('后台返回的数据查看是否存在就诊卡信息',res)
+        if(res.msg=='没有查询到数据')
+        {
+          that.flag='insert';
+          return;
+        }
+        that.flag='update';
+        that.dataForm.id=res.id;
+        that.dataForm.name=res.name;
+        that.dataForm.sex=res.sex;
+        that.dataForm.pid=res.pid;
+        that.dataForm.tel=res.tel;
+        that.dataForm.birthday=res.birthday
+        that.dataForm.medicalHistory=res.medicalHistory
+        that.dataForm.insuranceType=res.insuranceType
+      },false)
     },
     //切换到疾病与医保
     nextHandle: function () {

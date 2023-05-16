@@ -21,22 +21,22 @@
       </div>
       <div class="rp-container">
         <div class="rp-title">Rp:</div>
-        <div class="rp" v-for="one of rpList" :key="one">
+        <div class="rp" v-for="(one,index) of rpList" :key="one">
           <div class="row">
-            <div class="name txt">1. {{ one.name }}</div>
-            <div class="num txt">×{{ one.num }}</div>
+            <div class="name txt">{{index+1}}. {{ one.medicine_name }}</div>
+            <div class="num txt">×{{ 1 }}</div>
           </div>
           <div class="row">
-            <div class="spec txt">{{ one.spec }}</div>
+            <div class="spec txt">{{ one.scale }}</div>
           </div>
           <div class="row">
-            <div class="method txt">{{ one.method }}</div>
+            <div class="method txt">{{ one.use }}</div>
           </div>
         </div>
       </div>
       <div class="responsible-person">
         <div>
-          <div class="person">处方医师：{{ doctor }}</div>
+          <div class="person">处方医师：{{ doctorName }}</div>
         </div>
       </div>
     </div>
@@ -72,31 +72,35 @@ export default {
         colorLight: '#fff',
         correctLevel: QRCode.CorrectLevel.H
       });
+    },
+    //发起Ajax请求加载电子处方数据
+    onLoad() {
+      let that=this;
+      // let registrationId=options.registrationId;
+      let data={
+        registrationId:26
+      }
+      that.$http('/prescription/searchPrescriptionById','post',data,true,function(res){
+        if(res.code==200){
+          let result=res.result;
+          that.uuid=result.uuid;
+          that.patient.name=result.patientName;
+          that.patient.age=result.patientAge;
+          that.patient.sex=result.patientSex;
+          that.deptSub=result.deptSubName;
+          that.diagnosis=result.diagnosis;
+          that.rpList=result.rp;
+          that.doctorName=result.doctorName;
+        }
+        
+      })
     }
   },
   mounted: function () {
     this.creatQrCode(); // 创建二维码
+    this.onLoad();
   },
-  //发起Ajax请求加载电子处方数据
-//   onLoad(options) {
-//   	let that=this;
-//   	let registrationId=options.registrationId;
-//   	let data={
-//   		registrationId:registrationId
-//   	}
-//   	that.ajax(that.api.searchPrescriptionByRegistrationId,'post',data,function(res){
-//   		let result=res.data.result;
-//   		that.uuid=result.uuid;
-//   		that.patient.name=result.patientName;
-//   		that.patient.age=result.patientAge;
-//   		that.patient.sex=result.patientSex;
-//   		that.deptSub=result.deptSub;
-//   		that.diagnosis=result.diagnosis;
-//   		that.rpList=result.rp;
-//   		that.doctor=result.doctorName;
-//   	})
-//   }
-//  };
+  
 }
 </script>
 
@@ -105,7 +109,7 @@ export default {
 .page {
   background-color: #cccccc;
   font-family: @ff-1;
-  padding: 10px 0 100px 0;
+  padding: 10px 0 40px 0;
 }
 .main {
   background-color: #fff;

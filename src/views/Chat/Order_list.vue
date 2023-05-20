@@ -13,7 +13,8 @@
       </div>
     </div>
     <div class="order" v-for="one of list" :key="one.id">
-      <div class="row" @click="goChat(one.doctorId,one.name)">
+      <div  @click="goChat(one.doctorId,one.name,one.id)">
+        <div class="row">
         <div>
           <span class="doctor-name">{{ one.name }}</span>
           <span class="job">（{{ one.job }}）</span>
@@ -27,6 +28,7 @@
             <div class="tel">电话: {{ one.tel }}</div>
           </div>
         </div>
+      </div>
       </div>
     </div>
     <div v-if="list.length == 0">
@@ -59,11 +61,23 @@ export default {
         path: "/doctor_list",
       });
     },
-	goChat(userId,name) {
-      this.$router.push({
-        path:'/chat',
-        query:{userId,name}
+	goChat(userId,name,doctorId) {
+      let that=this;
+      that.$http('/isOnline/searchisOnline','post',{doctorId},false,function(res){
+        console.log(res);
+         if(res.result){
+            that.$router.push({
+              path:'/chat',
+              query:{userId,name}
+            })
+         }else{
+          ElMessage({
+            type:'warning',
+            message:"医生未上线，可点击立即聊天查看在线医生"
+          })
+         }
       })
+      
     }
   },
   mounted() {

@@ -13,22 +13,22 @@
       </div>
     </div>
     <div class="order" v-for="one of list" :key="one.id">
-      <div  @click="goChat(one.doctorId,one.name,one.id)">
+      <div @click="goChat(one.doctorId, one.name, one.id)">
         <div class="row">
-        <div>
-          <span class="doctor-name">{{ one.name }}</span>
-          <span class="job">（{{ one.job }}）</span>
-        </div>
-      </div>
-      <div class="row">
-        <div style="display: flex">
-          <div class="left"><el-avatar :src="one.imgUrl" /></div>
-          <div class="right">
-            <div class="email">邮箱: {{ one.email }}</div>
-            <div class="tel">电话: {{ one.tel }}</div>
+          <div>
+            <span class="doctor-name">{{ one.name }}</span>
+            <span class="job">（{{ one.job }}）</span>
           </div>
         </div>
-      </div>
+        <div class="row">
+          <div style="display: flex">
+            <div class="left"><el-avatar :src="one.imgUrl" /></div>
+            <div class="right">
+              <div class="email">邮箱: {{ one.email }}</div>
+              <div class="tel">电话: {{ one.tel }}</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div v-if="list.length == 0">
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { dayjs} from 'element-plus';
+import { dayjs, ElMessage } from "element-plus";
 import CpnavbarVue from "../../components/Cpnavbar.vue";
 export default {
   components: { CpnavbarVue },
@@ -61,24 +61,43 @@ export default {
         path: "/doctor_list",
       });
     },
-	goChat(userId,name,doctorId) {
-      let that=this;
-      that.$http('/isOnline/searchisOnline','post',{doctorId},false,function(res){
-        console.log(res);
-         if(res.result){
-            that.$router.push({
-              path:'/chat',
-              query:{userId,name}
-            })
-         }else{
-          ElMessage({
-            type:'warning',
-            message:"医生未上线，可点击立即聊天查看在线医生"
-          })
-         }
-      })
-      
-    }
+    goChat(userId, name, doctorId) {
+      let that = this;
+      that.$http(
+        "/isOnline/searchisOnline",
+        "post",
+        { doctorId },
+        false,
+        function (res) {
+          if (res.result) {
+            that.$http(
+              "/isOnline/searchStatus",
+              "post",
+              { doctorId },
+              true,
+              function (res) {
+                if (res.result) {
+                  ElMessage({
+                    type: "warning",
+                    message: "医生正在答疑，请稍后。。。",
+                  });
+                } else {
+                  that.$router.push({
+                    path: "/chat",
+                    query: { userId, name },
+                  });
+                }
+              }
+            );
+          } else {
+            ElMessage({
+              type: "warning",
+              message: "医生未上线，可点击立即聊天查看在线医生",
+            });
+          }
+        }
+      );
+    },
   },
   mounted() {
     let that = this;
@@ -159,7 +178,7 @@ export default {
       padding: 0 5px 20px 25px;
     }
     &:nth-child(2) {
-        padding: 13px 5px 0 20px
+      padding: 13px 5px 0 20px;
     }
     &:nth-child(3) {
       padding: 10px 5px 0 25px;

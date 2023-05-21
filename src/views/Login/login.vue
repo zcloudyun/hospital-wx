@@ -14,14 +14,6 @@
             size="medium"
             clearable
         /></el-form-item>
-        <el-form-item label="原密码" prop="password"
-          ><el-input
-            type="password"
-            show-password
-            v-model="dataForm.password"
-            size="medium"
-            clearable
-        /></el-form-item>
         <el-form-item label="新密码" prop="newPassword"
           ><el-input
             type="password"
@@ -96,7 +88,7 @@
       </div>
       <div>
         <label @click="goregister">没有账号?去注册</label>
-        <label @click="update">修改密码</label>
+        <label @click="update">忘记密码</label>
       </div>
     </el-form>
   </div>
@@ -120,7 +112,6 @@ export default {
       visible: false,
       dataForm: {
         nickname:'',
-        password: "",
         newPassword: "",
         confirmPassword: "",
       },
@@ -129,13 +120,6 @@ export default {
           {
             required: true,
             message: "用户名格式错误",
-          },
-        ],
-        password: [
-          {
-            required: true,
-            pattern: "^[a-zA-Z0-9]{6,20}$",
-            message: "密码格式错误",
           },
         ],
         newPassword: [
@@ -197,7 +181,6 @@ export default {
         if (valid) {
           let data = {
             nickname:that.dataForm.nickname,
-            password: that.dataForm.password,
             newPassword: that.dataForm.newPassword,
           };
           that.$http(

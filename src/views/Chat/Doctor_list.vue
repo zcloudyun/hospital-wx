@@ -18,9 +18,7 @@
           <div class="row">
             <div class="name">{{ one.name }}</div>
             <div class="job">{{ one.job }}</div>
-            <el-button
-              class="btn"
-              @click="goChat(one.userId,one.name)"
+            <el-button class="btn" @click="goChat(one.userId, one.name, one.id)"
               >问诊</el-button
             >
           </div>
@@ -60,7 +58,7 @@
 </template>
 
 <script>
-import { dayjs} from 'element-plus';
+import { dayjs } from "element-plus";
 import CpnavbarVue from "../../components/Cpnavbar.vue";
 export default {
   components: { CpnavbarVue },
@@ -70,8 +68,8 @@ export default {
       showDeptSubPicker: false,
       deptSubColumns: [],
       deptSubColumnData: [],
-      outTradeNo:'',
-      price:'',
+      outTradeNo: "",
+      price: "",
       job: "全部医师",
       showJobPicker: false,
       jobColumns: [
@@ -180,12 +178,27 @@ export default {
     cancelJob: function () {
       this.showJobPicker = false;
     },
-    goChat(userId,name) {
-      this.$router.push({
-        path:'/chat',
-        query:{userId,name}
-      })
-    }
+    goChat(userId, name, doctorId) {
+      that.$http(
+        "/isOnline/searchStatus",
+        "post",
+        { doctorId },
+        true,
+        function (res) {
+          if (res.result) {
+            ElMessage({
+              type: "warning",
+              message: "医生正在答疑，请稍后。。。",
+            });
+          } else {
+            that.$router.push({
+              path: "/chat",
+              query: { userId, name },
+            });
+          }
+        }
+      );
+    },
   },
   mounted: function () {
     this.loadDeptAndSub();

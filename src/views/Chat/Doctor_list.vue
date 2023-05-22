@@ -179,6 +179,7 @@ export default {
       this.showJobPicker = false;
     },
     goChat(userId, name, doctorId) {
+      let that=this;
       that.$http(
         "/isOnline/searchStatus",
         "post",

@@ -1,9 +1,9 @@
 <template>
 	<div class="page">
-    <cpnavbar title="我的好友"/>
+    <cpnavbar :title="titlename"/>
 		<div class="content" >
-			<div class="msg-list infinite-list" style="overflow: auto">
-				<div class="row">
+			<div class="msg-list infinite-list" style="overflow: auto;" ref="contentRow">
+				<div class="row" >
 					<!-- 用户消息 -->
 					<div v-for="item in msgList" :key="item.id">
 						<!-- 自己发出的消息 -->
@@ -75,6 +75,7 @@ export default {
 			scrollTop: 0,
 			scrollTodiv: '',
 			msgList: [],
+			titlename:'',
 			msgImgList: [],
 			myuid: 0,
 			isVoice: false,
@@ -154,9 +155,9 @@ export default {
       websocketonmessage(e){ //数据接收
         const redata = JSON.parse(e.data);
 		console.log('接收到数据: ', redata);
-
 		this.msgList.push(redata)
-
+        this.$refs.contentRow.scrollTop = this.$refs.contentRow.scrollHeight + 80;
+		console.log(this.$refs.contentRow.scrollTop);
       },
       websocketsend(Data){//数据发送
         this.websock.send(Data);
@@ -169,6 +170,7 @@ export default {
 		let {userId,name}=this.$route.query;
         this.doctorId=userId;
 		this.name=name;
+		this.titlename=name
 	}
 };
 </script>

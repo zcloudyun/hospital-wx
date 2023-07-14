@@ -1,6 +1,6 @@
 <template>
 	<div class="page">
-        <Cpnavbar title="添加就诊卡信息" />
+        <Cpnavbar title="选择挂号诊室" />
 		<div class="main">
 			<div class="left" :style="height">
 				<div

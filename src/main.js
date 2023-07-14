@@ -79,6 +79,7 @@ import * as echarts from 'echarts'
 app.config.globalProperties.$echarts = echarts //设置全局变量$echarts
 //后端项目的URL根路径
 let baseUrl = "http://47.108.146.141:8095/hospital-api"
+// let baseUrl = "http://localhost:8095/hospital-api"
 app.config.globalProperties.$baseUrl = baseUrl //设置全局变量$baseUrl
 
 //健康测评路径

@@ -53,14 +53,14 @@
             @click="onEvaluate(item.registrationId)"
             >{{ item.evaluate == 1 ? "未评价" : "已评价" }}</el-button
           >
-          <el-button
+          <!-- <el-button
             style="margin-left: 10px"
             :class="item.status == 2? 'btn' : ''"
             shape="circle"
             :disabled="item.status !== 2"
             @click="onRecord(item.recordId)"
             >病历</el-button
-          >
+          > -->
           <el-button
             style="margin-left: 10px"
             :class="item.status == 2? 'btn' : ''"
@@ -89,16 +89,9 @@
           <el-button
             class="btm2"
             shape="circle"
-            v-if="item.paymentStatus == 2 && item.status == 2"
+            v-if="item.paymentStatus == 2"
             @click="onDetail(item.registrationId)"
             >查看详情</el-button
-          >
-          <el-button
-            class="red"
-            shape="circle"
-            v-if="item.paymentStatus == 2 && item.status == 1"
-            disabled
-            >按时就诊</el-button
           >
         </div>
       </div>

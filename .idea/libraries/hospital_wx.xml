@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="hospital-wx">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/hospital-wx.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
